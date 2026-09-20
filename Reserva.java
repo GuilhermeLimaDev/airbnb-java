@@ -36,7 +36,7 @@ public class Reserva {
     }
 
     public void imprimirDados() {
-        System.out.println("Usuário: " + usuario.nome);
+        System.out.println("Usuário: " + usuario.getNome());
         System.out.println("Propriedade: " + propriedade.titulo);
         System.out.println("Check-in: " + entrada);
         System.out.println("Check-out: " + saida);

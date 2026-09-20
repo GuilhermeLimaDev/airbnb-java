@@ -43,8 +43,9 @@ public class Propriedade{
     System.out.println("Localização: " + localizacao);
     System.out.println("Capacidade: " + capacidade);
     System.out.println("Preço por noite: R$ " + preco_por_noite);
-    System.out.println("Proprietário: " + proprietario);
-    System.out.println("Disponível: " + proprietario);
+    System.out.println("Proprietário: " + proprietario.getNome());
+    System.out.println("Disponível: " + disponibilidade);
+    System.out.println("");
     }
 
 
