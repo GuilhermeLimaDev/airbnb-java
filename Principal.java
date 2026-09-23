@@ -1,3 +1,6 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Principal {
@@ -7,6 +10,7 @@ public class Principal {
         Usuario locador = new Usuario(null, null, null, null);
         Usuario locatario = new Usuario(null, null, null, null);
         Propriedade propriedade = new Propriedade(true, null, null, null, 0, 0, null);
+        ArrayList<Reserva> reservas = new ArrayList<>();
 
         int opcaoTipoUsuario;
         int opcaoMenu;
@@ -30,9 +34,10 @@ public class Principal {
             System.out.println("4 - Exibir dados da propriedade");
             System.out.println("");
             System.out.println("RESERVAS ________________");
-            System.out.println("À ser desenvolvido");
+            System.out.println("5 - Criar reserva");
+            System.out.println("6 - Listar reservas");
             System.out.println("");
-            System.out.println("5 - Encerrar");
+            System.out.println("7 - Encerrar");
 
             System.out.print("Escolha sua opção: ");
             opcaoMenu = scanner.nextInt();
@@ -100,15 +105,22 @@ public class Principal {
                         System.out.println("");
                     } else {
                         System.out.println("Certo, vamos prosseguir com a criação de propriedade!");
+                        System.out.println("");
                         System.out.print("Primeiro, insira o título do anúncio: ");
+                        System.out.println("");
                         propriedade.titulo = scanner.next();
+                        System.out.println("");
                         System.out.print("Agora, insira a descrição do anúncio: ");
+                        System.out.println("");
                         propriedade.descricao = scanner.next();
                         System.out.print("Em seguida, a localização da propriedade: ");
-                        propriedade.descricao = scanner.next();
+                        System.out.println("");
+                        propriedade.localizacao = scanner.next();
                         System.out.print("Descreva, em número, a capacidade da propriedade: ");
+                        System.out.println("");
                         propriedade.capacidade = scanner.nextInt();
                         System.out.print("Para finalizar, o preço por noite: ");
+                        System.out.println("");
                         propriedade.preco_por_noite = scanner.nextFloat();
                         propriedade.proprietario = locador;
                         System.out.println("");
@@ -128,6 +140,42 @@ public class Principal {
                     break;
 
                 case 5:
+                    if (!locatarioCriado || !propriedadeCriada) {
+                        System.out.println("Cadastre um locatário e uma propriedade antes de criar uma reserva!");
+                        break;
+                    }
+
+                    try {
+                        System.out.print("Insira a data de entrada (AAAA-MM-DD): ");
+                        LocalDate entrada = LocalDate.parse(scanner.next());
+                        System.out.print("Insira a data de saída (AAAA-MM-DD): ");
+                        LocalDate saida = LocalDate.parse(scanner.next());
+
+                        if (!saida.isAfter(entrada)) {
+                            System.out.println("A data de saída deve ser posterior à data de entrada!");
+                            break;
+                        }
+
+                        Reserva reserva = new Reserva(propriedade, locatario, entrada, saida);
+                        reserva.fazerReserva();
+                        reservas.add(reserva);
+                    } catch (DateTimeParseException e) {
+                        System.out.println("Data inválida! Use o formato AAAA-MM-DD com uma data válida.");
+                    }
+                    break;
+
+                case 6:
+                    if (reservas.isEmpty()) {
+                        System.out.println("Nenhuma reserva cadastrada!");
+                    } else {
+                        for (Reserva reserva : reservas) {
+                            reserva.imprimirDados();
+                            System.out.println("");
+                        }
+                    }
+                    break;
+
+                case 7:
                     System.out.println("Obrigado pela preferência!");
                     System.out.println("Encerrando...");
                     break;
@@ -137,7 +185,7 @@ public class Principal {
                     break;
             }
 
-        } while (opcaoMenu != 5);
+        } while (opcaoMenu != 7);
 
         scanner.close();
     }
